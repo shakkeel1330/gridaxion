@@ -3,6 +3,20 @@ import pandas as pd
 import altair as alt
 from datetime import date, datetime
 import calendar
+import requests
+from streamlit_lottie import st_lottie
+
+### Animation assets ###
+
+left_column, center_column, right_column = st.columns(3)
+
+def load_lottieurl(url):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+lottie_coding = load_lottieurl("https://assets8.lottiefiles.com/packages/lf20_p1nm0xis.json")
 
 def check_password():
     """Returns `True` if the user had a correct password."""
@@ -199,3 +213,6 @@ if check_password():
     # c = alt.Chart(ts_df[:1000]).mark_line().encode(x='Delivery Date',y='REGDN', tooltip=['Delivery Date', 'Hour Ending','REGDN'])
 
     st.altair_chart((lines + points + tooltips).interactive(), use_container_width=True)
+
+with center_column:
+    st_lottie(lottie_coding, height=300, key="coding")
